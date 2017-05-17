@@ -50,6 +50,13 @@ var xPos = ((width/2) - (dispSize/2)); //starts player in the center of the scre
 var yPos = ((height/2) - (dispSize/2));
 var moveSize = 2; //controlls the speed of movement 
 var isPointing = 1; // 1 = up, 2 = left, 3 = dowwn, 4 = right,
+var lighteningOne = false;
+var directionOne = 1;
+var startXOne;
+var startYOne;
+
+
+
 
 
 var map = 1; // starts player on the first map
@@ -237,7 +244,8 @@ function moveGiantOne(){
 function actions(){
 	// space
 	if (keys[32]) { // space
-		dispSize = (baseSize);// do a fighting (lightening) thing
+		dispSize = (baseSize);
+		castLightening();// do a fighting (lightening) thing
 	}
 
 	if (keys[17] == true) { // ctrl
@@ -260,6 +268,37 @@ function actions(){
 		// 	trigger conversation
 		// }
 	}
+}
+
+function castLightening(){
+
+	startXOne = (xPos + (dispSize/4));
+	startYOne = (yPos + (dispSize/4));
+	lighteningOne = true;
+	directionOne = isPointing;
+
+
+	//draw a rectangle, move it in isPointing
+}
+function drawLightening(){
+	if (lighteningOne == true){
+		if(directionOne == 1){
+			startYOne -= 2;
+		}
+		if(directionOne == 2){
+			startXOne -= 2;
+		}
+		if(directionOne == 3){
+			startYOne += 2;
+		}
+		if(directionOne == 4){
+			startXOne += 2;
+		}
+	}
+
+	ctx.fillStyle = "#00ffff";
+	ctx.fillRect(startXOne, startYOne, (dispSize/2), (dispSize/2));
+	ctx.fill();
 }
 
 function drawPlayer() {
@@ -302,7 +341,7 @@ function gameLoop(){
  	drawPlayer();
  	moveGiantOne();
  	drawGiant();
-
+ 	drawLightening();
 	// 'q' for quit
 	if (keys[81]) {  	
 		quit();
