@@ -65,7 +65,8 @@ var wallThick = 15;
 
 giantOne = {
 	x : 20,
-	y : 20
+	y : 20,
+	alive : true
 }
 
 giantTwo = {
@@ -309,9 +310,18 @@ function drawPlayer() {
 }
 
 function drawGiant() {
-	ctx.fillStyle = "#ff0000";
-	ctx.fillRect(giantOne.x, giantOne.y,dispSize,dispSize);
-	ctx.fill();	
+	if (giantOne.alive == true){
+		ctx.fillStyle = "#ff0000";
+		ctx.fillRect(giantOne.x, giantOne.y,dispSize,dispSize);
+		ctx.fill();	
+	}
+}
+
+function lighteningStrike() {
+	if((startXOne >= (giantOne.x - dispSize))&&(startXOne <= (giantOne.x + dispSize))
+		&&(startYOne >= (giantOne.y - dispSize))&&(startYOne <= (giantOne.y + dispSize))){
+		giantOne.alive = false;
+	}
 }
 
 function quit() {	
@@ -342,6 +352,7 @@ function gameLoop(){
  	moveGiantOne();
  	drawGiant();
  	drawLightening();
+ 	lighteningStrike();
 	// 'q' for quit
 	if (keys[81]) {  	
 		quit();
