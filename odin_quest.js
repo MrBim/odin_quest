@@ -53,7 +53,7 @@ var isPointing = 1; // 1 = up, 2 = left, 3 = dowwn, 4 = right,
 
 
 var map = 1; // starts player on the first map
-var margin = 10;
+var margin = 20;
 var wallThick = 15;
 
 // map stuff
@@ -157,16 +157,20 @@ function enterDoor(){ // currently flipflops between 1 and 2
 	}
 
 	if(yPos <= margin){
-		yPos = height - dispSize;//no
+		yPos = height - dispSize;//yes
+		
 	}
-	if(yPos >= height - margin - dispSize ){//yes
-		yPos = 0;
+	else if(yPos >= height - margin - dispSize ){//no
+		yPos = margin;
+		
 	}
-	if(xPos <= margin){//no
+	else if(xPos <= margin){//yes
 		xPos = width - dispSize;
+		
 	}
-	if(xPos >= width - margin - dispSize ){// yes
-		xPos = 0;
+	else if(xPos >= width - margin - dispSize ){// no
+		xPos = margin;
+		
 	}
 }
 
