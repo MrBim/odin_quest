@@ -48,13 +48,23 @@ var baseSize = 10; // size of player block
 var dispSize = baseSize;// allows making player block bigger for testing purposes
 var xPos = ((width/2) - (dispSize/2)); //starts player in the center of the screen
 var yPos = ((height/2) - (dispSize/2));
-var moveSize = 1; //controlls the speed of movement 
+var moveSize = 2; //controlls the speed of movement 
 var isPointing = 1; // 1 = up, 2 = left, 3 = dowwn, 4 = right,
 
 
 var map = 1; // starts player on the first map
 var margin = 20;
 var wallThick = 15;
+
+giantOne = {
+	x : 20,
+	y : 20
+}
+
+giantTwo = {
+	x : 0,
+	y : 0
+}
 
 // map stuff
 function mapOne(){
@@ -209,6 +219,21 @@ function thor_movement(){
 	}
 }
 
+function moveGiantOne(){
+	if (giantOne.x < xPos){
+		giantOne.x += 1;
+	}
+	else if (giantOne.x >= xPos){
+		giantOne.x -= 1;
+	}
+	if (giantOne.y < yPos){
+		giantOne.y += 1;
+	}
+	else if (giantOne.y >= yPos){
+		giantOne.y -= 1;
+	}
+}
+
 function actions(){
 	// space
 	if (keys[32]) { // space
@@ -244,6 +269,12 @@ function drawPlayer() {
 	ctx.fill();	
 }
 
+function drawGiant() {
+	ctx.fillStyle = "#ff0000";
+	ctx.fillRect(giantOne.x, giantOne.y,dispSize,dispSize);
+	ctx.fill();	
+}
+
 function quit() {	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	xPos = ((width/2) - (dispSize/2));
@@ -269,6 +300,8 @@ function gameLoop(){
  	thor_movement();
  	actions();
  	drawPlayer();
+ 	moveGiantOne();
+ 	drawGiant();
 
 	// 'q' for quit
 	if (keys[81]) {  	
