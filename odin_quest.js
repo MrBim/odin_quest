@@ -32,15 +32,28 @@ document.body.addEventListener("keyup", function(e) {
 
 // game elements
 var hasRun = false;
+
+// thor = {
+// 	lives : 9,
+// 	baseSize : 10, // size of player block
+// 	dispSize : this.baseSize,// allows making player block bigger for testing purposes
+// 	xPos : ((width/2) - (this.dispSize/2)), //starts player in the center of the screen
+// 	yPos : ((height/2) - (this.dispSize/2)),
+// 	moveSize : 1, //controlls the speed of movement 
+// 	isPointing : 1 // 1 = up, 2 = left, 3 = dowwn, 4 = right,
+// }
+
 var lives = 9;
-var baseSize = 10;
-var dispSize = baseSize;
-var xPos = ((width/2) - (dispSize/2));
+var baseSize = 10; // size of player block
+var dispSize = baseSize;// allows making player block bigger for testing purposes
+var xPos = ((width/2) - (dispSize/2)); //starts player in the center of the screen
 var yPos = ((height/2) - (dispSize/2));
-var moveSize = 1;
-var isPointing
-var map = 1;
-var margin = 15;
+var moveSize = 1; //controlls the speed of movement 
+var isPointing = 1; // 1 = up, 2 = left, 3 = dowwn, 4 = right,
+
+
+var map = 1; // starts player on the first map
+var margin = 10;
 var wallThick = 15;
 
 // map stuff
@@ -50,57 +63,39 @@ function mapOne(){
 	ctx.fillRect(0,0, width, height);
 	ctx.fill;
 
-
 	//walls
-	ctx.lineWidth = 15;
+	ctx.lineWidth = wallThick;
 	ctx.fillStyle = '#0000000';
-	//top wall
+	//top left
 	ctx.beginPath();
+    ctx.moveTo(0,300);
+    ctx.lineTo(0,0);
     ctx.moveTo(0,0);
-    ctx.lineTo(450, 0);
+    ctx.lineTo(450,0);
     ctx.stroke();
-
+    //top right
     ctx.beginPath();
-    ctx.moveTo(550, 0);
-    ctx.lineTo(1000, 0);
+    ctx.moveTo(550,0);
+    ctx.lineTo(1000,0);
+    ctx.moveTo(1000,0);
+    ctx.lineTo(1000,300);
     ctx.stroke();
-
-
-	//right wall
-    ctx.beginPath();
-    ctx.moveTo(1000, 0);
-    ctx.lineTo(1000, 300);
-    ctx.stroke();
-
+    //bottom right
     ctx.beginPath();
     ctx.moveTo(1000, 400);
     ctx.lineTo(1000, 700);
-	ctx.stroke();
-
-
-	//bottom wall
-    ctx.beginPath();
 	ctx.moveTo(1000, 700);
     ctx.lineTo(550, 700);
     ctx.stroke();
-
+    //bottom left
     ctx.beginPath();
-	ctx.moveTo(450, 700);
-    ctx.lineTo(0, 700);
-    ctx.stroke();
-
-    
-	// left wall
-    ctx.beginPath();
-    ctx.moveTo(0, 700);
-    ctx.lineTo(0, 400);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 300);
+	ctx.moveTo(450,700);
+    ctx.lineTo(0,700);
+    ctx.moveTo(0,700);
+    ctx.lineTo(0,400);
     ctx.stroke();
 }
+
 function mapTwo(){
 	//Grass
 	ctx.fillStyle = waterColor;
@@ -109,113 +104,39 @@ function mapTwo(){
 
 
 	//walls
-	ctx.lineWidth = 15;
-	ctx.fillStyle = '#0000000';
-	//top wall
-	ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.lineTo(450, 0);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(550, 0);
-    ctx.lineTo(1000, 0);
-    ctx.stroke();
-
-
-	//right wall
-    ctx.beginPath();
-    ctx.moveTo(1000, 0);
-    ctx.lineTo(1000, 300);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(1000, 400);
-    ctx.lineTo(1000, 700);
-	ctx.stroke();
-
-
-	//bottom wall
-    ctx.beginPath();
-	ctx.moveTo(1000, 700);
-    ctx.lineTo(550, 700);
-    ctx.stroke();
-
-    ctx.beginPath();
-	ctx.moveTo(450, 700);
-    ctx.lineTo(0, 700);
-    ctx.stroke();
-
-    
-	// left wall
-    ctx.beginPath();
-    ctx.moveTo(0, 700);
-    ctx.lineTo(0, 400);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 300);
-    ctx.stroke();
-}
-function walls(){
 	ctx.lineWidth = wallThick;
 	ctx.fillStyle = '#0000000';
-	//top wall
+	//top left
 	ctx.beginPath();
+    ctx.moveTo(0,300);
+    ctx.lineTo(0,0);
     ctx.moveTo(0,0);
-    ctx.lineTo(450, 0);
+    ctx.lineTo(450,0);
     ctx.stroke();
-
+    //top right
     ctx.beginPath();
-    ctx.moveTo(550, 0);
-    ctx.lineTo(1000, 0);
+    ctx.moveTo(550,0);
+    ctx.lineTo(1000,0);
+    ctx.moveTo(1000,0);
+    ctx.lineTo(1000,300);
     ctx.stroke();
-
-
-	//right wall
-    ctx.beginPath();
-    ctx.moveTo(1000, 0);
-    ctx.lineTo(1000, 300);
-    ctx.stroke();
-
+    //bottom right
     ctx.beginPath();
     ctx.moveTo(1000, 400);
     ctx.lineTo(1000, 700);
-	ctx.stroke();
-
-
-	//bottom wall
-    ctx.beginPath();
 	ctx.moveTo(1000, 700);
     ctx.lineTo(550, 700);
     ctx.stroke();
-
+    //bottom left
     ctx.beginPath();
-	ctx.moveTo(450, 700);
-    ctx.lineTo(0, 700);
-    ctx.stroke();
-
-    
-	// left wall
-    ctx.beginPath();
-    ctx.moveTo(0, 700);
-    ctx.lineTo(0, 400);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 300);
+	ctx.moveTo(450,700);
+    ctx.lineTo(0,700);
+    ctx.moveTo(0,700);
+    ctx.lineTo(0,400);
     ctx.stroke();
 }
 
-function landscape(){
-	ctx.fillStyle = grassColor;
-	ctx.fillRect(0,0, width, height);
-	ctx.fill;
-}
-
-function clearCanvas() {
+function drawCanvas() {
 	ctx.clearRect(0,0,width,height);
 	if (map == 1){
 		mapOne();
@@ -225,41 +146,7 @@ function clearCanvas() {
 	}
 }
 
-function drawPlayer() {
-	clearCanvas();
-	ctx.fillStyle = "#000000";
-	ctx.fillRect(xPos, yPos,dispSize,dispSize);
-	ctx.fill();	
-}
-
-function movement(){
-	// up arrow
-	if (keys[38]) {
-		yPos -= moveSize;
-		if( yPos <= 0 + wallThick )
-			yPos = 0 +wallThick;
-	}
-	// down arrow
-	if (keys[40]) {
-		yPos += moveSize;
-		if( yPos >= height - dispSize - wallThick)
-			yPos = height - dispSize - wallThick;
-	}    
-	// left arrow
-	if (keys[37]) {
-		xPos -= moveSize;
-		if( xPos <= 0 + wallThick)
-			xPos = 0 + wallThick;
-	}
-	// right arrow
-	if (keys[39]) {
-		xPos += moveSize;
-		if( xPos >= width - dispSize - wallThick)
-			xPos = width - dispSize - wallThick;
-	}
-}
-
-function enterDoor(){
+function enterDoor(){ // currently flipflops between 1 and 2 
 	dispSize = (baseSize * 4);
 
 	if (map == 1){
@@ -270,10 +157,51 @@ function enterDoor(){
 	}
 
 	if(yPos <= margin){
-		yPos = height - dispSize;
+		yPos = height - dispSize;//no
 	}
-	if(yPos >= height - margin - dispSize ){
+	if(yPos >= height - margin - dispSize ){//yes
 		yPos = 0;
+	}
+	if(xPos <= margin){//no
+		xPos = width - dispSize;
+	}
+	if(xPos >= width - margin - dispSize ){// yes
+		xPos = 0;
+	}
+}
+
+function thor_movement(){
+	// up arrow
+	if (keys[38]) {
+		isPointing = 1;
+		yPos -= moveSize;
+		if( yPos <= 0){
+			yPos = 0;
+		}
+	}
+	// down arrow
+	if (keys[40]) {
+		isPointing = 3;
+		yPos += moveSize;
+		if( yPos >= height - dispSize){
+			yPos = height - dispSize;
+		}
+	}    
+	// left arrow
+	if (keys[37]) {
+		isPointing = 2;
+		xPos -= moveSize;
+		if( xPos <= 0){
+			xPos = 0;
+		}
+	}
+	// right arrow
+	if (keys[39]) {
+		isPointing = 4;
+		xPos += moveSize;
+		if( xPos >= width - dispSize){
+			xPos = width - dispSize;
+		}
 	}
 }
 
@@ -282,8 +210,6 @@ function actions(){
 	if (keys[32]) { // space
 		dispSize = (baseSize);// do a fighting (lightening) thing
 	}
-
-
 
 	if (keys[17] == true) { // ctrl
 
@@ -305,8 +231,15 @@ function actions(){
 		// 	trigger conversation
 		// }
 	}
-	
 }
+
+function drawPlayer() {
+	drawCanvas();
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(xPos, yPos,dispSize,dispSize);
+	ctx.fill();	
+}
+
 function quit() {	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	xPos = ((width/2) - (dispSize/2));
@@ -319,7 +252,7 @@ function gameLoop(){
 	
 	if (hasRun === false) {
 		// initalise all game variables here
-		clearCanvas();		
+		drawCanvas();		
 		hasRun = true;	
 	}
 	
@@ -329,7 +262,7 @@ function gameLoop(){
 	
  	requestAnimationFrame(gameLoop);
 	
- 	movement();
+ 	thor_movement();
  	actions();
  	drawPlayer();
 
