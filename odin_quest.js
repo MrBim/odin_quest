@@ -3,7 +3,7 @@ var grassColor = "#02B109";
 var waterColor = "#1865ed";
 
 // sounds
-//var gameMusic = new Audio("music_one.wav");
+var gameMusic = new Audio("music_one.wav");
 
 
 // keyboard
@@ -44,6 +44,7 @@ var hasRun = false;
 // }
 
 var lives = 9;
+var score = 0;
 var baseSize = 40; // size of player block
 var dispSize = baseSize;// allows making player block bigger for testing purposes 
 var walkAnimFrame = 0;
@@ -236,6 +237,7 @@ function enterDoor(){ // currently flipflops between 1 and 2
 	else if(yPos >= bGateSize ){// is it down
 		yPos = tGateSize + 10;	
 	}
+	giantStart();
 }
 
 function thor_movement(){
@@ -276,7 +278,11 @@ function thor_movement(){
 		walkAnimFrame += 1;
 	}
 }
-
+function giantStart(){
+	giantOne.x = ((Math.random() * 1000) + 50);
+	giantOne.y = ((Math.random() * 700) + 35);
+	giantOne.alive = true;
+}
 function moveGiantOne(){
 	var xDiff;
 	var yDiff;
@@ -350,23 +356,37 @@ function castLightening(){
 
 function drawLightening(){
 	if (lighteningOne == true){
+		
 		if(directionOne == 1){
 			startYOne -= 2;
+			if(startYOne <= 0){
+				lighteningOne = false;
+			}
 		}
 		if(directionOne == 2){
 			startXOne -= 2;
+			if(startXOne <= 0){
+				lighteningOne = false;
+			}
 		}
 		if(directionOne == 3){
 			startYOne += 2;
+			if(startYOne >= 700){
+				lighteningOne = false;
+			}
 		}
 		if(directionOne == 4){
 			startXOne += 2;
+			if(startXOne >= 1000){
+				lighteningOne = false;
+			}
 		}
-	}
+	
 
-	ctx.fillStyle = "#00ffff";
-	ctx.fillRect(startXOne, startYOne, (dispSize/2), (dispSize/2));
-	ctx.fill();
+		ctx.fillStyle = "#00ffff";
+		ctx.fillRect(startXOne, startYOne, (dispSize/2), (dispSize/2));
+		ctx.fill();
+	}
 }
 
 // function drawPlayer() { // draw player as a square
@@ -461,6 +481,7 @@ function lighteningStrike() {
 	if((startXOne >= (giantOne.x - dispSize))&&(startXOne <= (giantOne.x + dispSize))
 		&&(startYOne >= (giantOne.y - dispSize))&&(startYOne <= (giantOne.y + dispSize))){
 		giantOne.alive = false;
+		score += 10;
 	}
 }
 
@@ -471,24 +492,30 @@ function quit() {
 	yPos = ((height/2) - (dispSize/2));
 	giantOne.alive = true;
 }
+function stopMusic(){
+	gameMusic.pause();
 
+}
 
 //------------------ gameloop ---------------------------------------------------------
 function gameLoop(){
 	
 	if (hasRun === false) {
-		giantOne.x = ((Math.random() * 1000) + 50);
-		giantOne.y = ((Math.random() * 700) + 35);
+		giantStart();
 		// initalise all game variables here
-		drawCanvas();		
-		hasRun = true;	
+		drawCanvas();	
+		gameMusic.play();	
+		hasRun = true;
+		score = 0;	
+	
 	}
 	
 	if (lives === 0) {
 		quit();
 	}
+
+	
 	drawCanvas();
- 	requestAnimationFrame(gameLoop);
  	thor_movement();
  	actions();
  	drawPlayer();
@@ -496,9 +523,10 @@ function gameLoop(){
  	drawGiant();
  	drawLightening();
  	lighteningStrike();	
+ 	requestAnimationFrame(gameLoop);
 	// 'q' for quit
 	if (keys[81]) {  	
 		quit();
 	}
-	
+	document.getElementById("score").innerHTML = score;
 }
