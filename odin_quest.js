@@ -87,16 +87,44 @@ var map = 1; // starts player on the first map
 var margin = 40;
 var wallThick = 15;
 
+var tGateSize = 20;
+var rGateSize = 940;
+var bGateSize = 640;
+var lGateSize = 20;
+
+
 giantOne = {
 	x : 20,
 	y : 20,
-	alive : true
+	alive : true,
+	animFrame : 0
 }
+giantPointing = 1;
 
-giantTwo = {
-	x : 0,
-	y : 0
-}
+var giantPicOneN = new Image();
+giantPicOneN.src = 'giant_one_n.png';
+
+var giantPicTwoN = new Image();
+giantPicTwoN.src = 'giant_two_n.png';
+
+var giantPicOneE = new Image();
+giantPicOneE.src = 'giant_one_e.png';
+
+var giantPicTwoE = new Image();
+giantPicTwoE.src = 'giant_two_e.png';
+
+var giantPicOneS = new Image();
+giantPicOneS.src = 'giant_one_s.png';
+
+var giantPicTwoS = new Image();
+giantPicTwoS.src = 'giant_two_s.png';
+
+var giantPicOneW = new Image();
+giantPicOneW.src = 'giant_one_w.png';
+
+var giantPicTwoW = new Image();
+giantPicTwoW.src = 'giant_two_w.png';
+
 
 // map stuff
 function mapOne(){
@@ -195,29 +223,19 @@ function enterDoor(){ // currently flipflops between 1 and 2
 	else if (map == 2){
 		map = 1;
 	}
-
-
-
-// top and left work ,  bottom and right dont
-
-	if(yPos <= margin){ // is it up
-		yPos = height - 40;//
+	// top and left dont ,  bottom and right work
+	if(yPos <= tGateSize){ // is it up
+		yPos = bGateSize - 10;//
 	}
-	else if(yPos >= 620 ){// is it down
-		yPos = margin;	
+	else if(xPos <= lGateSize){// is it left
+		xPos = rGateSize - 10;	
 	}
-	if(xPos <= margin){// is it left
-		xPos = width - dispSize;	
+	else if(xPos >= rGateSize ){// is it right
+		xPos = lGateSize + 10;	
 	}
-	else if(xPos >= 920 ){// is it right
-		xPos = margin;	
+	else if(yPos >= bGateSize ){// is it down
+		yPos = tGateSize + 10;	
 	}
-
-
-
-
-
-
 }
 
 function thor_movement(){
@@ -262,16 +280,21 @@ function thor_movement(){
 function moveGiantOne(){
 	if (giantOne.x < xPos){
 		giantOne.x += 1;
+		giantPointing = 2;
 	}
 	else if (giantOne.x >= xPos){
 		giantOne.x -= 1;
+		giantPointing = 4;
 	}
 	if (giantOne.y < yPos){
 		giantOne.y += 1;
+		giantPointing = 3;
 	}
 	else if (giantOne.y >= yPos){
 		giantOne.y -= 1;
+		giantPointing = 1;
 	}
+	giantOne.animFrame += 1;
 }
 
 function actions(){
@@ -312,6 +335,7 @@ function castLightening(){
 
 	//draw a rectangle, move it in isPointing
 }
+
 function drawLightening(){
 	if (lighteningOne == true){
 		if(directionOne == 1){
@@ -376,14 +400,51 @@ function drawPlayer() {
 	}// draw player from a .png (40px,40px)
 }
 
-function drawGiant() {
-	if (giantOne.alive == true){
-		ctx.fillStyle = "#ff0000";
-		ctx.fillRect(giantOne.x, giantOne.y,dispSize,dispSize);
-		ctx.fill();	
-	}
-}
+// function drawGiant() { // draw as a square
+// 	if (giantOne.alive == true){
+// 		ctx.fillStyle = "#ff0000";
+// 		ctx.fillRect(giantOne.x, giantOne.y,dispSize,dispSize);
+// 		ctx.fill();	
+// 	}
+// }
 
+function drawGiant() { //draw as .png
+	var giantPicOne
+	var giantPicTwo
+	if (giantOne.alive == true){
+		if(giantPointing == 1){
+			giantPicOne = giantPicOneN; 
+			giantPicTwo = giantPicTwoN;
+		}
+		if(giantPointing == 4){// dirtections are labeled backwards somewhere
+			giantPicOne = giantPicOneE;
+			giantPicTwo = giantPicTwoE;
+		}
+		if(giantPointing == 3){
+			giantPicOne = giantPicOneS;
+			giantPicTwo = giantPicTwoS;
+		}
+		if(giantPointing == 2){// dirtections are labeled backwards somewhere
+			giantPicOne = giantPicOneW;
+			giantPicTwo = giantPicTwoW;
+		}
+
+		if (giantOne.animFrame < 10) {
+			ctx.beginPath();
+			ctx.drawImage(giantPicOne, giantOne.x, giantOne.y, 40, 40);
+			ctx.closePath();
+		}
+		else if (giantOne.animFrame > 9) {
+			ctx.beginPath();
+			ctx.drawImage(giantPicTwo, giantOne.x, giantOne.y, 40, 40);
+			ctx.closePath();
+			
+			if(giantOne.animFrame > 19){
+				giantOne.animFrame = 0;
+			}
+		}
+	}// draw player from a .png (40px,40px)
+}
 function lighteningStrike() {
 	if((startXOne >= (giantOne.x - dispSize))&&(startXOne <= (giantOne.x + dispSize))
 		&&(startYOne >= (giantOne.y - dispSize))&&(startYOne <= (giantOne.y + dispSize))){
@@ -391,7 +452,8 @@ function lighteningStrike() {
 	}
 }
 
-function quit() {	
+function quit() {
+	hasRun = false;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	xPos = ((width/2) - (dispSize/2));
 	yPos = ((height/2) - (dispSize/2));
@@ -403,6 +465,8 @@ function quit() {
 function gameLoop(){
 	
 	if (hasRun === false) {
+		giantOne.x = ((Math.random() * 1000) + 50);
+		giantOne.y = ((Math.random() * 700) + 35);
 		// initalise all game variables here
 		drawCanvas();		
 		hasRun = true;	
