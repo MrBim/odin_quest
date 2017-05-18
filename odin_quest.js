@@ -278,23 +278,35 @@ function thor_movement(){
 }
 
 function moveGiantOne(){
+	var xDiff;
+	var yDiff;
+
 	if (giantOne.x < xPos){
+		xDiff = xPos - giantOne.x;
 		giantOne.x += 1;
 		giantPointing = 2;
 	}
 	else if (giantOne.x >= xPos){
+		xDiff = giantOne.x - xPos;
+
 		giantOne.x -= 1;
 		giantPointing = 4;
 	}
 	if (giantOne.y < yPos){
+		yDiff = yPos - giantOne.y;
 		giantOne.y += 1;
 		giantPointing = 3;
 	}
 	else if (giantOne.y >= yPos){
+		yDiff = giantOne.y - yPos;
 		giantOne.y -= 1;
 		giantPointing = 1;
 	}
+
+
+
 	giantOne.animFrame += 1;
+
 }
 
 function actions(){
