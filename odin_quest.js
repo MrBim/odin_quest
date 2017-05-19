@@ -480,8 +480,12 @@ function drawGiant() { //draw as .png
 function lighteningStrike() {
 	if((startXOne >= (giantOne.x - dispSize))&&(startXOne <= (giantOne.x + dispSize))
 		&&(startYOne >= (giantOne.y - dispSize))&&(startYOne <= (giantOne.y + dispSize))){
-		giantOne.alive = false;
-		score += 10;
+		if(giantOne.alive == true){
+			giantOne.x = 1100;
+			giantOne.y = 800;
+			giantOne.alive = false;
+			score += 10;
+		}
 	}
 }
 
