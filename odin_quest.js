@@ -241,8 +241,8 @@ function enterDoor(){ // currently flipflops between 1 and 2
 }
 
 function thor_movement(){
-	// up arrow
-	if (keys[38]) {
+	// up (w)
+	if (keys[87]) {
 		isPointing = 1;
 		yPos -= moveSize;
 		if( yPos <= 0){
@@ -250,8 +250,8 @@ function thor_movement(){
 		}
 		walkAnimFrame += 1;
 	}
-	// down arrow
-	if (keys[40]) {
+	// down (s)
+	if (keys[83]) {
 		isPointing = 3;
 		yPos += moveSize;
 		if( yPos >= height - dispSize){
@@ -259,8 +259,8 @@ function thor_movement(){
 		}
 		walkAnimFrame += 1;
 	}    
-	// left arrow
-	if (keys[37]) {
+	// left (a)
+	if (keys[65]) {
 		isPointing = 2;
 		xPos -= moveSize;
 		if( xPos <= 0){
@@ -268,8 +268,8 @@ function thor_movement(){
 		}
 		walkAnimFrame += 1;
 	}
-	// right arrow
-	if (keys[39]) {
+	// right (d)
+	if (keys[68]) {
 		isPointing = 4;
 		xPos += moveSize;
 		if( xPos >= width - dispSize){
@@ -316,12 +316,12 @@ function moveGiantOne(){
 }
 
 function actions(){
-	// space
-	if (keys[32]) { // space
+	// K
+	if (keys[75]) { // space
 		castLightening();// do a fighting (lightening) thing
 	}
 
-	if (keys[17] == true) { // ctrl
+	if (keys[79] == true) { // o
 
 		// go thru doors
 		if(((xPos > 450 )&&(xPos < 550)) && ((yPos > 620) || (yPos < 15))) { //top and bottom doors
